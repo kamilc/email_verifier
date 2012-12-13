@@ -17,7 +17,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install verifier
+    $ gem install email_verifier
 
 ## Usage
 
