@@ -8,7 +8,7 @@ class EmailVerifier::Checker
   # real mail servers got from MX dns lookup
   def initialize(address)
     @email   = address
-    @domain  = address.split("@").last
+    _, @domain  = address.split("@")
     @servers = list_mxs @domain
     raise EmailVerifier::NoMailServerException.new("No mail server for #{address}") if @servers.empty?
     @smtp    = nil
@@ -19,6 +19,7 @@ class EmailVerifier::Checker
   end
 
   def list_mxs(domain)
+    return [] unless domain
     `host -t MX #{domain}`.scan(/(?<=by ).+/).map do |mx| 
       res = mx.split(" ")
       next if res.last[0..-2].strip.empty?

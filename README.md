@@ -21,7 +21,18 @@ Or install it yourself as:
 
 ## Usage
 
-Just put this in your model e. g:
+To get info about realness of given email address, email_verifier connects
+with mail server that email's domain points to and pretends to send an email.
+
+Some stmp servers will not allow you to do this if you will not present 
+yourself as some real user. So first thing you'd need to set up is to 
+put something like this either in initializer or in application.rb file:
+
+    EmailVerifier.config do |config|
+      config.verifier_email = "realname@realdomain.com"
+    end
+
+Then just put this in your model e. g:
     
     validates_email_realness_of :email
 
@@ -31,6 +42,8 @@ Or - if you'd like to use it outside of your models:
 
 This method will return true or false, or - will throw exception 
 with nicely detailed info about what's wrong.
+
+**Still Rails 3+ only** but compatibility with anything in tghe pipeline.
 
 ## Credits
 ![End Point Corporation](http://www.endpoint.com/images/end_point.png)
