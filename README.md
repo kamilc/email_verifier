@@ -43,7 +43,7 @@ Or - if you'd like to use it outside of your models:
 This method will return true or false, or - will throw exception 
 with nicely detailed info about what's wrong.
 
-**Still Rails 3+ only** but compatibility with anything in tghe pipeline.
+**Still Rails 3+ only** but compatibility with anything in the pipeline.
 
 ## Credits
 ![End Point Corporation](http://www.endpoint.com/images/end_point.png)
