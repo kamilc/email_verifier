@@ -57,7 +57,15 @@ class EmailVerifier::Checker
   def helo(address)
     ensure_connected
 
-    ensure_250 @smtp.helo(@domain)
+    begin 
+      ensure_250 @smtp.helo(@domain)
+    rescue Net::SMTPSyntaxError => e
+      if e.message[/503/]
+        # Looks like server already got HELO
+        return true
+      end
+      raise Net::SMTPSyntaxError, e.message
+    end
   end
 
   def mailfrom(address)
