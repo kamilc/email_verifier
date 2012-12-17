@@ -1,7 +1,7 @@
 require 'net/smtp'
 
 class EmailVerifier::Checker
-  
+
   ##
   # Returns server object for given email address or throws exception
   # Object returned isn't yet connected. It has internally a list of 
@@ -16,6 +16,7 @@ class EmailVerifier::Checker
     # this is because some mail servers won't give any info unless 
     # a real user asks for it:
     @user_email = EmailVerifier.config.verifier_email
+    _, @user_domain = @user_email.split "@"
   end
 
   def list_mxs(domain)
@@ -35,10 +36,10 @@ class EmailVerifier::Checker
     begin
       server = next_server
       raise EmailVerifier::OutOfMailServersException.new("Unable to connect to any one of mail servers for #{@email}") if server.nil?
-      @smtp = Net::SMTP.start(server[:address], 25)
+      @smtp = Net::SMTP.start server[:address], 25, @user_domain
       return true
     rescue EmailVerifier::OutOfMailServersException => e
-      return false
+      raise EmailVerifier::OutOfMailServersException, e.message
     rescue => e
       retry
     end
@@ -49,23 +50,8 @@ class EmailVerifier::Checker
   end
 
   def verify
-    self.helo @user_email
     self.mailfrom @user_email
     self.rcptto(@email)
-  end
-
-  def helo(address)
-    ensure_connected
-
-    begin 
-      ensure_250 @smtp.helo(@domain)
-    rescue Net::SMTPSyntaxError => e
-      if e.message[/503/]
-        # Looks like server already got HELO
-        return true
-      end
-      raise Net::SMTPSyntaxError, e.message
-    end
   end
 
   def mailfrom(address)
