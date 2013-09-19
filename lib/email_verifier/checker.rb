@@ -1,4 +1,5 @@
 require 'net/smtp'
+require 'dnsruby'
 
 class EmailVerifier::Checker
 
@@ -21,11 +22,12 @@ class EmailVerifier::Checker
 
   def list_mxs(domain)
     return [] unless domain
-    `host -t MX #{domain}`.scan(/(?<=by ).+/).map do |mx| 
-      res = mx.split(" ")
-      next if res.last[0..-2].strip.empty?
-      { priority: res.first.to_i, address: res.last[0..-2] }
-    end.reject(&:nil?).sort_by { |mx| mx[:priority] }
+    res = Dnsruby::DNS.new
+    mxs = []
+    res.each_resource(domain, 'MX') do |rr|
+      mxs << { priority: rr.preference, address: rr.exchange.to_s }
+    end
+    mxs.sort_by { |mx| mx[:priority] }
   end
 
   def is_connected
