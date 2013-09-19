@@ -1,3 +1,4 @@
+[![Gem Version](https://badge.fury.io/rb/email_verifier.png)](http://badge.fury.io/rb/email_verifier)
 # Email Verifier
 
 Helper validation utility for checking whether given email address is real or not.
