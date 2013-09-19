@@ -5,6 +5,8 @@ Many times as developers we've put in our models statements for checking email a
 *format*. This gem will complete your existing setups with validator that actually
 connects with given mail server and asks if given email address exists for real.
 
+**New**: Now it supports Heroku!
+
 ## Installation
 
 Add this line to your application's Gemfile:
