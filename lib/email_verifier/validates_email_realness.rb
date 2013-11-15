@@ -7,7 +7,7 @@ module EmailVerifier
       class EmailRealnessValidator < ActiveModel::EachValidator
         def validate_each(record, attribute, value)
           begin
-            record.errors.add attribute, 'deve essere un indirizzo reale' unless EmailVerifier.check(value)
+            record.errors.add attribute, I18n.t('errors.messages.test') unless EmailVerifier.check(value)
           rescue EmailVerifier::OutOfMailServersException
             record.errors.add attribute, 'punta ad un server mail inesistente'
           rescue EmailVerifier::NoMailServerException
