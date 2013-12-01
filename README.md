@@ -41,7 +41,7 @@ Then just put this in your model e. g:
 
 Or - if you'd like to use it outside of your models:
 
-    EmailValidator.check(youremail)
+    EmailVerifier.check(youremail)
 
 This method will return true or false, or - will throw exception 
 with nicely detailed info about what's wrong.
