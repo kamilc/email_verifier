@@ -28,6 +28,8 @@ class EmailVerifier::Checker
       mxs << { priority: rr.preference, address: rr.exchange.to_s }
     end
     mxs.sort_by { |mx| mx[:priority] }
+  rescue Dnsruby::NXDomain
+    raise EmailVerifier::NoMailServerException.new("#{domain} does not exist") 
   end
 
   def is_connected
