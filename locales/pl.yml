@@ -1,0 +1,8 @@
+pl:
+  errors:
+    messages:
+      email_verifier: 
+        email_not_real: musi wskazywać na prawdziwy adres email
+        out_of_mail_server: wskazuje na niedziałający serwer poczty
+        no_mail_server: wskazuje na domenę która nie posiada serwera pocztowego
+        failure: nie udało się sprawdzić prawdziwości

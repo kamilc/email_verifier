@@ -1,0 +1,8 @@
+en:
+  errors:
+    messages:
+      email_verifier: 
+        email_not_real: must point at a real mail account
+        out_of_mail_server: appears to point at a dead mail server
+        no_mail_server: "appears to point at a domain which doesn't handle e-mail"
+        failure: could not be checked if is real
