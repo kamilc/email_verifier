@@ -45,6 +45,7 @@ Add these lines to your locale file in config/locales (you can customize message
             out_of_mail_server: appears to point to dead mail server
             no_mail_server: appears to point to domain which doesn't handle e-mail
             failure: could not be checked if is real
+            exception: could not be sent
 
 Then just put this in your model e. g:
     
