@@ -14,6 +14,8 @@ module EmailVerifier
             record.errors.add attribute, I18n.t('errors.messages.email_verifier.no_mail_server')
           rescue EmailVerifier::FailureException
             record.errors.add attribute, I18n.t('errors.messages.email_verifier.failure')
+	  rescue Exception
+	    record.errors.add attribute, I18n.t('errors.messages.email_verifier.exception')
           end
         end
       end
