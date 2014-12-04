@@ -5,31 +5,25 @@ class EmailVerifier::Checker
 
   ##
   # Returns server object for given email address or throws exception
-  # Object returned isn't yet connected. It has internally a list of 
+  # Object returned isn't yet connected. It has internally a list of
   # real mail servers got from MX dns lookup
   def initialize(address)
     @email   = address
-    _, @domain  = address.split("@")
-    @servers = list_mxs @domain
+    @servers = list_mxs(address.split("@").last)
     raise EmailVerifier::NoMailServerException.new("No mail server for #{address}") if @servers.empty?
     @smtp    = nil
-
-    # this is because some mail servers won't give any info unless 
-    # a real user asks for it:
-    @user_email = EmailVerifier.config.verifier_email
-    _, @user_domain = @user_email.split "@"
   end
 
   def list_mxs(domain)
-    return [] unless domain
-    res = Dnsruby::DNS.new
+    return [] unless domain.present?
     mxs = []
-    res.each_resource(domain, 'MX') do |rr|
+    resolver = Dnsruby::DNS.new
+    resolver.each_resource(domain, 'MX') do |rr|
       mxs << { priority: rr.preference, address: rr.exchange.to_s }
     end
     mxs.sort_by { |mx| mx[:priority] }
   rescue Dnsruby::NXDomain
-    raise EmailVerifier::NoMailServerException.new("#{domain} does not exist") 
+    raise EmailVerifier::NoMailServerException.new("#{domain} does not exist")
   end
 
   def is_connected
@@ -40,7 +34,7 @@ class EmailVerifier::Checker
     begin
       server = next_server
       raise EmailVerifier::OutOfMailServersException.new("Unable to connect to any one of mail servers for #{@email}") if server.nil?
-      @smtp = Net::SMTP.start server[:address], 25, @user_domain
+      @smtp = Net::SMTP.start(server[:address], 25, EmailVerifier.config.verifier_domain)
       return true
     rescue EmailVerifier::OutOfMailServersException => e
       raise EmailVerifier::OutOfMailServersException, e.message
@@ -54,7 +48,7 @@ class EmailVerifier::Checker
   end
 
   def verify
-    self.mailfrom @user_email
+    self.mailfrom EmailVerifier.config.verifier_email
     self.rcptto(@email).tap do
       close_connection
     end
@@ -72,7 +66,7 @@ class EmailVerifier::Checker
 
   def rcptto(address)
     ensure_connected
-   
+
     begin
       ensure_250 @smtp.rcptto(address)
     rescue => e
