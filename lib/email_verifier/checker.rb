@@ -21,7 +21,11 @@ class EmailVerifier::Checker
     resolver.each_resource(domain, 'MX') do |rr|
       mxs << { priority: rr.preference, address: rr.exchange.to_s }
     end
-    mxs.sort_by { |mx| mx[:priority] }
+    if mxs.empty?
+      return [resolver.getresource(domain, 'A').address.to_s]
+    else
+      return mxs.sort_by { |mx| mx[:priority] }
+    end
   rescue Dnsruby::NXDomain
     raise EmailVerifier::NoMailServerException.new("#{domain} does not exist")
   end
