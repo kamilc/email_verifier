@@ -31,16 +31,17 @@ class EmailVerifier::Checker
   end
 
   def connect
-    begin
-      server = next_server
-      raise EmailVerifier::OutOfMailServersException.new("Unable to connect to any one of mail servers for #{@email}") if server.nil?
-      @smtp = Net::SMTP.start(server[:address], 25, EmailVerifier.config.verifier_domain)
-      return true
-    rescue EmailVerifier::OutOfMailServersException => e
-      raise EmailVerifier::OutOfMailServersException, e.message
-    rescue => e
-      retry
-    end
+    server = next_server
+    raise EmailVerifier::OutOfMailServersException.new("Unable to connect to any one of mail servers for #{@email}") if server.nil?
+    @smtp = Net::SMTP.new(server[:address], 25)
+    @smtp.open_timeout = 5
+    @smtp.read_timeout = 2
+    @smtp.start(EmailVerifier.config.verifier_domain)
+    true
+  rescue EmailVerifier::OutOfMailServersException => e
+    raise e
+  rescue => e
+    retry
   end
 
   def next_server
