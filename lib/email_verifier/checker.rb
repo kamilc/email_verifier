@@ -55,8 +55,13 @@ class EmailVerifier::Checker
 
   def verify
     self.mailfrom @user_email
-    self.rcptto(@email)
-    @smtp.finish if (@smtp && @smtp.started?)
+    self.rcptto(@email).tap do
+      close_connection
+    end
+  end
+
+  def close_connection
+    @smtp.finish if @smtp && @smtp.started?
   end
 
   def mailfrom(address)
