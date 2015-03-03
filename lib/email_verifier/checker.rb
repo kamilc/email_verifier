@@ -95,5 +95,4 @@ class EmailVerifier::Checker
       raise EmailVerifier::FailureException.new "Mail server responded with #{smtp_return.status} when we were expecting 250"
     end
   end
-
 end
