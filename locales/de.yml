@@ -1,0 +1,8 @@
+en:
+  errors:
+    messages:
+      email_verifier:
+        email_not_real: muss eine echte Mail-Adresse sein
+        out_of_mail_server: Mail-Server ist nicht erreichbar
+        no_mail_server: verwendet eine Domain, die keine E-Mails annimmt
+        failure: konnte nicht auf Korrektheit überprüft werden
