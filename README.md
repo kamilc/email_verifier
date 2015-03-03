@@ -26,7 +26,7 @@ Or install it yourself as:
 
 ## Usage
 
-To get info about realness of given email address, email_verifier connects with a mail server that email's domain points to and pretends to send an email. Some smtp servers will not allow you to do this if you will not present yourself as a real user. 
+To get info about realness of given email address, email_verifier connects with a mail server that email's domain points to and pretends to send an email. Some smtp servers will not allow you to do this if you will not present yourself as a real user.
 
 First thing you need to set up is placing something like this either in initializer or in application.rb file:
 
@@ -35,7 +35,7 @@ First thing you need to set up is placing something like this either in initiali
     end
 
 Then just put this in your model e. g:
-    
+
     validates_email_realness_of :email
 
 Or - if you'd like to use it outside of your models:
@@ -69,6 +69,8 @@ Please send questions to [kamil@endpoint.com](mailto:kamil@endpoint.com)
 
 * Maciej Walusiak ([https://github.com/Rabsztok]())
 * Francesco Gnarra ([https://github.com/francescognarra]())
+* Stefan Wienert ([https://github.com/zealot128]())
+* [https://github.com/mzabaljauregui]()
 
 ## Contributing yourself
 
