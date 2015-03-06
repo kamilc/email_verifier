@@ -71,6 +71,7 @@ Please send questions to [kamil@endpoint.com](mailto:kamil@endpoint.com)
 * Francesco Gnarra ([https://github.com/francescognarra]())
 * Stefan Wienert ([https://github.com/zealot128]())
 * [https://github.com/mzabaljauregui]()
+* Ethan Czahor ([https://github.com/czahor]())
 
 ## Contributing yourself
 
