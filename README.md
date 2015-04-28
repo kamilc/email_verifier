@@ -14,6 +14,7 @@ It also:
 
 Add this line to your application's Gemfile:
 
+    # place it at the bottom of rails/activesupport if you're working with them.
     gem 'email_verifier'
 
 And then execute:
