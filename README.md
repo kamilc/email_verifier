@@ -45,6 +45,10 @@ Or - if you'd like to use it outside of your models:
 
 This method will return true or false, or  will throw an exception with nicely detailed info about what's wrong.
 
+## Important: problems when using locally
+
+When you're trying to use it from an IP that a server either cannot reach or trust (in any way) - then it returns 421 service not available (connection refused, too many connections) instead of letting you connect. Because of this you should most probably always be using it on a machine that the other SMTP server can reach.
+
 ## Customizing messages
 
 Add these lines to your locale file in config/locales:
