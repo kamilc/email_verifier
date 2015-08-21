@@ -49,6 +49,15 @@ This method will return true or false, or  will throw an exception with nicely d
 
 When you're trying to use it from an IP that a server either cannot reach or trust (in any way) - then it returns 421 service not available (connection refused, too many connections) instead of letting you connect. Because of this you should most probably always be using it on a machine that the other SMTP server can reach.
 
+## Disabling on Test
+
+If you are using Rails in test environment, the check will always succeed, so that your CI servers will not try to contact SMTP servers.
+You can change that behavior in the configuration block:
+
+    EmailVerifier.config do |config|
+      config.test_mode = Rails.env.test?
+    end
+
 ## Customizing messages
 
 Add these lines to your locale file in config/locales:
@@ -56,7 +65,7 @@ Add these lines to your locale file in config/locales:
     it:
       errors:
         messages:
-          email_verifier: 
+          email_verifier:
             email_not_real: must point to a real mail account
             out_of_mail_server: appears to point to dead mail server
             no_mail_server: appears to point to domain which doesn't handle e-mail
