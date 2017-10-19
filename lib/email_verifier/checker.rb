@@ -1,5 +1,5 @@
 require 'net/smtp'
-require 'dnsruby'
+require 'resolv'
 
 class EmailVerifier::Checker
 
@@ -22,14 +22,10 @@ class EmailVerifier::Checker
 
   def list_mxs(domain)
     return [] unless domain
-    res = Dnsruby::DNS.new
-    mxs = []
-    res.each_resource(domain, 'MX') do |rr|
-      mxs << { priority: rr.preference, address: rr.exchange.to_s }
+    mxs = Resolv::DNS.new.getresources(domain, Resolv::DNS::Resource::IN::MX).map do |mx|
+      { priority: mx.preference, address: mx.exchange.to_s }
     end
     mxs.sort_by { |mx| mx[:priority] }
-  rescue Dnsruby::NXDomain
-    raise EmailVerifier::NoMailServerException.new("#{domain} does not exist") 
   end
 
   def is_connected
